@@ -1,0 +1,64 @@
+{% extends 'main_app/base.html' %}
+{% load static %}
+{% block page_title %}{{page_title}}{% endblock page_title %}
+{% block content %}
+<section class="content">
+    <div class="container-fluid">
+        <!-- Small boxes (Stat box) -->
+        <div class="row">
+          
+         
+            <div class="col-md-4">
+                <div class="card border-danger mb-3" style="max-width: 18rem;">
+                    <div class="card-header">Total Attendance</div>
+                    <div class="card-body text-danger">
+                      <h5 class="card-title">{{total_students}}</h5>
+                    </div>
+                  </div>
+                       </div>
+          
+        <div class="col-md-4">
+          <div class="image">
+              <img src="{{ request.user.profile_pic}}" width="150px" height="150px" class="img-circle elevation-3 mx-auto d-block "  alt="User Image">
+              <br/>
+          </div>
+      </div>
+            <!-- ./col -->
+            <div class="col-md-4">
+                <div class="card border-danger mb-3" style="max-width: 18rem;">
+                    <div class="card-header">Total Leave</div>
+                    <div class="card-body text-danger">
+                      <h5 class="card-title">{{total_leave}}</h5>
+                    </div>
+                  </div>
+ 
+                </div>
+
+              </div>
+                
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th scope="col">Id</th>                             
+                      <th scope="col">First</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for s in nameList%}
+               
+                    <tr>
+                <th scope="col" class="lead">{{s.id}}</th>
+                      
+                      <td><p class="lead">{{s}}</p></td>
+                      
+                    </tr>
+                    {% endfor %}
+           
+                  </tbody>
+                </table>
+           
+        </div>
+        
+    </div>
+</section>
+{% endblock content %}

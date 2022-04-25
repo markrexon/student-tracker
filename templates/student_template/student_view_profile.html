@@ -1,0 +1,89 @@
+{% extends 'main_app/base.html' %}
+{% load static %}
+
+{% block content %}
+
+<section class="content">
+    <div class="container-fluid">
+       
+        <div class="row">
+            
+             <div class="col-md-8">
+               
+                <!-- general form elements -->
+                <div class="card card-primary">
+                
+
+                    <table class="table">
+                        <tbody>
+                        <tr>
+                            <th scope="row">FirstName</th>
+                            <td>{{user.first_name}}</td>
+                        </tr>    
+                        <tr>
+                        <th scope="row">Lastname</th>
+                            <td>{{user.last_name}}</td>
+                        </tr>
+                        <tr>
+                            <th scope="col">Debt_no</th>
+                        <td>{{user.Dept_no}}</td>   
+                        </tr>
+                       {% for na in course%}
+                        <tr>
+                            <th scope="col">Department</th>
+                        <td>{{na.name}}</td>   
+                        </tr>
+                        {% endfor %}
+                        {% for y in sess %}
+                        <tr>
+                            <th scope="col">Year of passed out</th>
+                            <td>{{y.start_year}} - {{y.end_year}}</td>
+                        </tr>
+                        {% endfor %}
+                        <tr>
+                            <th scope="col">gender</th>
+                        <td>{{user.gender}}</td>   
+                        </tr>
+                       
+                        <tr>
+                            <th scope="col">Address</th>
+                        <td>{{user.address}}</td>  
+                        </tr>
+                        
+                        <tr>
+                            <th scope="col">DOB</th>
+                        <td>{{user.DOB}}</td>   
+                        </tr>
+                        <tr>
+                            <th scope="col">phone</th>
+                        <td>{{user.phone}}</td>   
+                        </tr>
+                        <tr>
+                            <th scope="col">blood group</th>
+                        <td>{{user.blood_group}}</td>   
+                        </tr>
+                        <tr>
+                            <th scope="col">Fathername</th>
+                        <td>{{user.Father_name}}</td>   
+                        </tr>
+                        <tr>
+                            <th scope="col">telephone</th>
+                        <td>{{user.telephone}}</td>   
+                        </tr>
+
+                        
+                        </tbody>
+                      </table>                </div>
+                <!-- /.card -->
+
+            </div>
+            <div class="col-md-4">
+                <div class="image">
+                    <img src="{{ request.user.profile_pic}}" width="150px" height="150px" class="img-circle elevation-3 mx-auto d-block "  alt="User Image">
+                    <br/>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock content %}

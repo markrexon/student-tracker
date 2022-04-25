@@ -1,0 +1,329 @@
+{% extends 'main_app/base.html' %}
+{% load static %}
+{% block page_title %}{{page_title}}{% endblock page_title %}
+{% block custom_css %}
+<style>
+.attendance_div_red{
+    padding: 10px;
+    background: #f44336;
+    border: 3px solid white;
+    text-align: center;
+    color: #fff;
+    border-radius: 30px;
+    box-shadow: 1px 1px 1px grey;
+    margin: 5px;
+}
+.attendance_div_green{
+    padding: 10px;
+    background: rgb(45, 218, 174);
+    border: 3px solid white;
+    text-align: center;
+    color: #fff;
+    border-radius: 30px;
+    box-shadow: 1px 1px 1px grey;
+    margin: 5px;
+}
+</style>
+{% endblock custom_css %}
+
+{% block content %}
+
+<section class="content">
+    <div class="container-fluid">
+        <div class="container-fluid">
+            
+            <!-- Small boxes (Stat box) -->
+            <div class="row">
+                <div class="col-lg-6">
+               
+                    <!-- DONUT CHART -->
+                    <div class="card card-secondary">
+                      
+                      <div class="card-body">
+                        <canvas id="attendanceData" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
+                      </div>
+                      <span class="d-block p-2 bg-white text-dark"> <span> Present :</span>{{percent_present}}%</span>
+                     <span class="d-block p-2">Total hour Attendand :{{total_attendance}}</span>
+                      <span class="d-block p-2 bg-white text-dark"> <span>Absent  :</span>{{percent_absent}}%</span>
+                      <span class="d-block p-2 bg-white text-dark"><span>{{status}}</span></span>                  
+                    </div>
+                    <!-- /.card -->
+            </div>
+            <div class="col-lg-6">
+
+                     <!-- general form elements -->
+                    <div class="card card-secondary">
+                        <div class="card-header">
+                            <h3 class="card-title">{{page_title}}</h3>
+                        </div>
+                        <!-- /.card-header -->
+                        <!-- form start -->
+                        <div class="card-body">
+    
+    
+    
+                            <div class="form-group">
+                                <label>Select Subject</label>
+                                <select  id="subject" class="form-control">
+                                    <option value="">----</option>
+                                    {% for subject in subjects  %}
+                                    <option value="{{subject.id}}">{{subject.name}} </option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label>Start Date</label>
+                                        <input type="date" class="form-control" placeholder="Start Date" name="start_date" required id="start_date">
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label>End Date</label>
+                                        <input type="date" class="form-control" placeholder="End Date" name="end_date"  id="end_date">
+                                    </div>
+                                </div>
+                                <button type="button" id="fetch_attendance" class="btn btn-secondary btn-block">Fetch
+                                    Attendance Data</button>
+                   </div>
+    
+                        </div>
+                        <!-- /.card-body -->
+    
+                        <div class="card-footer">
+                            <table class='table'>
+                                <thead class='thead-dark'>
+                                    <tr>
+                                        <th colspan="1">Date</th> 
+                                        <th colspan="1">Status</th>
+                                    </tr>
+                                </thead>
+                            <tbody id="attendance_data">
+
+                            </tbody>
+                                    </table>
+                        </div>
+                    </div>
+                    
+          
+
+            </div>
+        </div>  
+ 
+        <div class="row">
+        
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock content %}
+
+
+{% block custom_js %}
+<script>
+    $(document).ready(function () {
+
+       
+        $("#fetch_attendance").click(function () {
+            var subject = $("#subject").val()
+            var start_date = $("#start_date").val()
+            var end_date = $("#end_date").val()
+            if (subject.length  == 0 || end_date.length ==0 ||start_date.length == 0){
+                alert("Please Select Subject and Date Range");
+                return false;
+            }
+            $("#attendance_data").html(null)
+            $.ajax({
+                url: "{% url 'student_view_attendance' %}",
+                type: 'POST',
+                data: {
+                    subject: subject,
+                    start_date: start_date,
+                    end_date:end_date
+                }
+            }).done(function (response) {
+                var json_data = JSON.parse(response)
+                if (json_data.length < 1) {
+                    $("#attendance_data").html("<div class='col-md-12 alert alert-danger'>No Data For Specified Parameters</div>")
+
+                } else {
+                    var div_data = ""
+                         
+                    for (key in json_data) {
+                    if (json_data[key]['status']){
+                        div_data += "<tbody><tr><td colspan='2'>"+ json_data[key]['date'] +'</td>'+"<td colspan='1'>Present</td></tr></tbody>" 
+                    }else{
+
+                        div_data += "<tbody><tr><td colspan='5'>"+ json_data[key]['date'] +'</td>'+"<td colspan='1'>Absent</td></tr></tbody>"
+                    }
+                }
+                    div_data += ""
+                    $("#attendance_data").html(div_data)
+
+                }
+            }).fail(function (response) {
+                $("#attendance_data").html("Error While Fetching Records")
+            })
+
+
+          
+
+        })
+    })
+
+
+$(document).ready(function(){
+
+//Dataset
+var subjects = {{data_name|safe}}
+var data_present = {{data_present}}
+var data_absent = {{data_absent}}
+
+//-------------
+//- DONUT CHART -
+var attendanceDataCanvas = $('#attendanceData').get(0).getContext('2d')
+var donutData        = {
+  labels: [
+     'Present', 'Absent'
+  ],
+  datasets: [
+    {
+      data: [{{percent_present}}, {{percent_absent}}],
+      backgroundColor : ['#00a65a','#f56954'],
+    }
+  ]
+}
+var donutOptions     = {
+  maintainAspectRatio : false,
+  responsive : true,
+}
+var attendanceData = new Chart(attendanceDataCanvas, {
+  type: 'doughnut',
+  data: donutData,
+  options: donutOptions      
+});
+
+//attendanceStatistics
+//Bar Chart
+var areaChartData = {
+labels  : subjects,
+datasets: [
+{
+    label               : 'Present In Class',
+    backgroundColor     : 'rgba(60,141,188,0.9)',
+    borderColor         : 'rgba(60,141,188,0.8)',
+    pointRadius          : false,
+    pointColor          : '#3b8bba',
+    pointStrokeColor    : 'rgba(60,141,188,1)',
+    pointHighlightFill  : '#fff',
+    pointHighlightStroke: 'rgba(60,141,188,1)',
+    data                : data_present
+  },
+
+  {
+    label               : 'Absent In Class',
+    backgroundColor     : 'rgba(210, 214, 222, 1)',
+    borderColor         : 'rgba(210, 214, 222, 1)',
+    pointRadius         : false,
+    pointColor          : 'rgba(210, 214, 222, 1)',
+    pointStrokeColor    : '#c1c7d1',
+    pointHighlightFill  : '#fff',
+    pointHighlightStroke: 'rgba(220,220,220,1)',
+    data                : data_absent
+  },
+]
+}
+
+
+
+})
+
+</script>
+    <!-- The core Firebase JS SDK is always required and must be listed first -->
+    <script src="https://www.gstatic.com/firebasejs/7.23.0/firebase-app.js"></script>
+
+    <!-- TODO: Add SDKs for Firebase products that you want to use
+     https://firebase.google.com/docs/web/setup#available-libraries -->
+    <script src="https://www.gstatic.com/firebasejs/7.23.0/firebase-analytics.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.22.1/firebase-messaging.js"></script>
+
+
+    <script>
+        // Your web app's Firebase configuration
+        // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+        var firebaseConfig = {
+            apiKey: "AIzaSyBarDWWHTfTMSrtc5Lj3Cdw5dEvjAkFwtM",
+            authDomain: "sms-with-django.firebaseapp.com",
+            databaseURL: "https://sms-with-django.firebaseio.com",
+            projectId: "sms-with-django",
+            storageBucket: "sms-with-django.appspot.com",
+            messagingSenderId: "945324593139",
+            appId: "1:945324593139:web:03fa99a8854bbd38420c86",
+            measurementId: "G-2F2RXTL9GT"
+        };
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig)
+        const messaging = firebase.messaging();
+        function InitializeFireBaseMessaging() {
+            messaging
+                .requestPermission()
+                .then(function () {
+                    console.log("Notification Permission");
+                    return messaging.getToken();
+                })
+                .then(function (token) {
+                    console.log("Token : " + token);
+                    sendToServer(token);
+                })
+                .catch(function (reason) {
+                    console.log(reason)
+                })
+        }
+        messaging.onMessage(function (payload) {
+            const notificationOption = {
+                body: payload.notification.body,
+                icon: payload.notification.icon,
+
+            }
+            if (Notification.permission == 'granted') {
+                var notification = new Notification(payload.notification.title, notificationOption);
+                notification.onclick = function (event) {
+                    event.preventDefault();
+                    window.open(payload.notification.click_action, "_blank");
+                    notification.close();
+                }
+            }
+            console.log(payload);
+        });
+        messaging.onTokenRefresh(function () {
+            messaging.getToken()
+                .then(function (newToken) {
+                    console.log("New Token : " + newToken);
+                    sendToServer(newToken);
+
+                })
+                .catch(function (reason) {
+                    console.log(reason)
+                })
+        })
+
+        function sendToServer(token){
+          $.ajax({
+            url: "{% url 'student_fcmtoken' %}",
+            type: 'POST',
+            data: {
+                token: token,
+            }
+        }).done(function (response) {
+           
+  
+           
+        }).fail(function (response) {
+        })
+
+        }
+        
+        InitializeFireBaseMessaging();
+    </script>
+{% endblock custom_js %}

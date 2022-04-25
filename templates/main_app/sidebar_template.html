@@ -1,0 +1,445 @@
+{% load static %}
+<style>
+   #sidebtn{
+        padding: 6px 8px 6px 16px;
+     background-color: rgb(16, 6, 107);
+     color: white;
+    }
+    
+</style>
+<aside class="main-sidebar sidebar-white-primary elevation-4">
+{% if request.user.user_type == '1' %}
+    <!-- Brand Logo -->
+   
+    <h4 class="brand-text font-weight-light text-center m-4">Admin Portal</h4>
+ 
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <!-- Sidebar user panel (optional) -->
+       
+
+        <!-- Sidebar Menu -->
+        <nav class="mt-2">
+            <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+
+               
+                <li class="nav-item">
+                    {% url 'admin_view_profile' as admin_view_profile %}
+                    <a id="sidebtn" href="{{admin_view_profile}}" class="nav-link {% if admin_view_profile == request.path %} active {% endif %}">
+                        <p>
+                            View/Edit Profile
+
+                        </p>
+                    </a>
+                </li>
+            
+                <li class="nav-item">
+                    {% url 'add_staff' as add_staff %}
+                    <a id="sidebtn" href="{{add_staff}}" class="nav-link {% if add_staff == request.path %} active {% endif %}">
+                         
+                        <p>
+                            Add Staff
+
+                        </p>
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    {% url 'manage_staff' as manage_staff %}
+                    {% url 'edit_staff' staff_id as edit_staff %}
+                    <a id="sidebtn" href="{{manage_staff}}"
+                        class="nav-link {% if manage_staff == request.path or request.path == edit_staff %} active {% endif %}">
+                      
+                        <p>
+                            Manage Staff
+
+                        </p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    {% url 'add_student' as add_student%}
+                    <a id="sidebtn" href="{{add_student}}" class="nav-link  {% if add_student == request.path %} active {% endif %}">
+                       
+                        <p>
+                            Add Student
+
+                        </p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    {% url 'manage_student' as manage_student %}
+                    {% url 'edit_student' student_id as edit_student %}
+
+                    <a id="sidebtn" href="{{manage_student}}"
+                        class="nav-link  {% if edit_student == request.path or manage_student == request.path %} active {% endif %}">
+                         
+                        <p>
+                            Manage Student
+
+                        </p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    {% url 'add_course' as add_course %}
+                    <a id="sidebtn" href="{{add_course}}" class="nav-link  {% if add_course == request.path %} active {% endif %}">
+                        
+                        <p>
+                            Add Course
+
+                        </p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    {% url 'manage_course' as manage_course %}
+                    {% url 'edit_course' course_id as edit_course %}
+                    <a id="sidebtn" href="{{manage_course}}"
+                        class="nav-link  {% if edit_course == request.path or manage_course == request.path %} active {% endif %}">
+                         
+                        <p>
+                            Manage Course
+
+                        </p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    {% url 'add_subject' as add_subject %}
+                    <a id="sidebtn" href="{{add_subject}}" class="nav-link  {% if add_subject == request.path %} active {% endif %}">
+                         
+                        <p>
+                            Add Subject
+
+                        </p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    {% url 'manage_subject' as manage_subject %}
+                    {% url 'edit_subject' subject_id as edit_subject %}
+                    <a id="sidebtn" href="{{manage_subject}}"
+                        class="nav-link  {% if edit_subject == request.path or manage_subject == request.path %} active {% endif %}">
+                        
+                        <p>
+                            Manage Subject
+
+                        </p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    {% url 'add_session' as add_session %}
+                    <a id="sidebtn" href="{{add_session}}" class="nav-link  {% if add_session == request.path %} active {% endif %}">
+                         
+                        <p>
+                            Add Session
+
+                        </p>
+                    </a>
+                </li>
+
+             
+                <li class="nav-item">
+                {% url 'manage_session' as manage_session %}
+                {% url 'edit_session' session_id as edit_session %}
+                <a id="sidebtn" href="{{manage_session}}"
+                    class="nav-link  {% if edit_session == request.path or manage_session == request.path %} active {% endif %}">
+                     
+                    <p>
+                        Manage Session
+
+                    </p>
+                </a>
+        </li>
+                <li class="nav-item">
+                    {% url 'admin_view_attendance' as admin_view_attendance %}
+
+                    <li class="nav-item">
+                        <a id="sidebtn" href="{{admin_view_attendance}}" class="nav-link  {% if admin_view_attendance == request.path %} active {% endif %}">
+                            
+                            <p>
+                                View Attendance
+                            </p>
+                        </a>
+                    </li>  
+            <li class="nav-item">
+                {% url 'student_feedback_message' as student_feedback_message %}
+
+                <a id="sidebtn"href="{{ student_feedback_message }}" class="nav-link  {% if student_feedback_message == request.path %} active {% endif %}">
+                     
+                    <p>
+                        Student Feedback
+                            
+                        </p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                {% url 'staff_feedback_message' as staff_feedback_message %}
+
+                    <a id="sidebtn"href="{{staff_feedback_message}}" class="nav-link   {% if staff_feedback_message == request.path %} active {% endif %}">
+                        
+                        <p>
+                            Staff Feedback
+                            
+                        </p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                {% url 'view_staff_leave' as view_staff_leave %}
+
+                    <a id="sidebtn" href="{{view_staff_leave}}" class="nav-link  {% if view_staff_leave == request.path %} active {% endif %}">
+                        
+                        <p>
+                            Staff Leave
+                            
+                        </p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                {% url 'view_student_leave' as view_student_leave %}
+
+                    <a id="sidebtn" href="{% url 'view_student_leave' %}" class="nav-link  {% if view_student_leave == request.path %} active {% endif %}">
+                        
+                        <p>
+                            Student Leave
+                            
+                        </p>
+                    </a>
+                </li>
+                
+{% elif request.user.user_type == '2' %}
+    <!-- Brand Logo -->
+     <style>
+.head{
+    background-color: yellow;
+    padding: 5px;
+    width: 300px;
+    text-align: center;
+
+}
+     </style>  
+     <h4 class="brand-text font-weight-light text-center m-4">Staff Portal</h4>
+     <!-- Sidebar -->
+    <div class="sidebar">
+        <!-- Sidebar user panel (optional) -->
+        <div class="user-panel mt-1 pb-1 mb-1 d-flex">
+            
+                <h5 class="head">Welcome {{ user.first_name}}</h5>
+        </div>
+
+        <!-- Sidebar Menu -->
+        <nav class="mt-2">
+            <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+
+                <li class="nav-item">
+                    {% url 'staff_home' as staff_home %}
+                    <a id="sidebtn" href="{{staff_home}}" class="nav-link {% if staff_home == request.path %} active {% endif %}">
+                            <p>
+                            Home
+
+                        </p>
+                    </a>
+                </li>
+<!-- Example split danger button -->
+
+<div class="btn-group">
+    <button type="button" class="btn btn-danger">Marks entry</button>
+    <button type="button" class="btn btn-danger dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    </button>
+    <div class="dropdown-menu">
+        <li class="nav-item">
+            {% url 'staff_add_result' as staff_add_result %}
+            <a href="{{staff_add_result}}" class="nav-link {% if staff_add_result == request.path %} active {% endif %}">
+                <p>
+                    Add Result
+    
+                </p>
+            </a>
+        </li>  
+        
+        <li class="nav-item">
+
+            {% url 'edit_student_result' as edit_student_result %}
+            <a href="{{edit_student_result}}" class="nav-link {% if edit_student_result == request.path %} active {% endif %}">
+            
+                <p>
+                    Edit Result
+    
+                </p>
+            </a>
+        </li>
+      
+
+    </div>
+  </div>
+               
+  <br/>
+        <!-- Example split danger button -->
+<div class="btn-group">
+    <button type="button" class="btn btn-danger">Attendance entry</button>
+    <button type="button" class="btn btn-danger dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+     
+    </button>
+    <div class="dropdown-menu">
+        <li class="nav-item">
+            {% url 'staff_take_attendance' as staff_take_attendance %}
+            <a class="sidebtn" href="{{staff_take_attendance}}" class="nav-link {% if staff_take_attendance == request.path %} active {% endif %}">
+             
+                <p>
+                    Take Attendance
+    
+                </p>
+            </a>
+        </li>    
+        <li class="nav-item">
+            {% url 'staff_update_attendance' as staff_update_attendance %}
+            <a href="{{staff_update_attendance}}" class="nav-link {% if staff_update_attendance == request.path %} active {% endif %}">
+                
+                <p>
+                    View/Update Attendance
+    
+                </p>
+            </a>
+        </li>
+                  
+        
+
+    </div>
+  </div>        
+                <li class="nav-item">
+                    {% url 'staff_view_notification' as staff_view_notification %}
+                    <a  href="{{staff_view_notification}}" class="nav-link {% if staff_view_notification == request.path %} active {% endif %}">
+                       
+                        <p  >
+                           View Notifications
+
+                        </p>
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    {% url 'staff_apply_leave' as staff_apply_leave %}
+                    <a href="{{staff_apply_leave}}" class="nav-link {% if staff_apply_leave == request.path %} active {% endif %}">
+                        <p>
+                           Apply For Leave
+
+                        </p>
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    {% url 'staff_feedback' as staff_feedback %}
+                    <a href="{{staff_feedback}}" class="nav-link {% if staff_feedback == request.path %} active {% endif %}">
+                       
+                        <p>
+                           Feedback
+
+                        </p>
+                    </a>
+                </li>
+          
+{% else %}
+<style>
+    .heading{
+        background-color: yellow;
+        text-align: center;
+        font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif
+    }
+</style>  
+<!-- Brand Logo -->
+   
+        <h4 class="brand-text font-weight-light text-center m-4">Student Portal</h4>
+   
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <!-- Sidebar user panel (optional) -->
+        <!-- <div class="user-panel mt-3 pb-3 mb-3 d-flex"> -->
+           
+            <div >
+                <h4 class="heading">Welcome {{user.first_name}}</h4>
+           </div>
+
+        <!-- Sidebar Menu -->
+        <nav class="mt-2">
+            <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+
+             
+                <li class="nav-item">
+                    {% url 'student_view_profile' as student_view_profile %}
+                    <a id="sidebtn" href="{{student_view_profile}}" class="nav-link {% if student_view_profile == request.path %} active {% endif %}">
+                        
+                        <p>
+                            Personal Details
+
+                        </p>
+                    </a>
+                </li>
+          
+                <li class="nav-item">
+                    {% url 'student_home' as student_home %}
+                    <a id="sidebtn" href="{{student_home}}" class="nav-link {% if student_home == request.path %} active {% endif %}">
+                         <p>
+                            Attendance Details
+
+                        </p>
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    {% url 'student_view_result' as student_view_result %}
+                    <a id="sidebtn" href="{{student_view_result}}" class="nav-link {% if student_view_result == request.path %} active {% endif %}">
+                       
+                        <p>
+                           Marks
+
+                        </p>
+                    </a>
+                </li>
+          
+                <li class="nav-item">
+                    {% url 'student_view_notification' as student_view_notification %}
+                    <a id="sidebtn" href="{{student_view_notification}}" class="nav-link {% if student_view_result == request.path %} active {% endif %}">
+                        <p>
+                            Announcement
+ 
+                         </p>
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    {% url 'student_apply_leave' as student_apply_leave %}
+                    <a id="sidebtn" href="{{student_apply_leave}}" class="nav-link {% if student_apply_leave == request.path %} active {% endif %}">
+                       
+                        <p>
+                           Apply For Leave
+
+                        </p>
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    {% url 'student_feedback' as student_feedback %}
+                    <a  id="sidebtn"href="{{student_feedback}}" class="nav-link {% if student_feedback == request.path %} active {% endif %}">
+                        
+                        <p>
+                           Feedback
+
+                        </p>
+                    </a>
+                </li>
+                
+{% endif %}
+
+
+
+<li class="nav-item">
+    <a id="sidebtn" href="{% url 'user_logout' %}" onclick="return confirm('Your session would be terminated.\n\nProceed?')" class="nav-link">
+       
+        <p >
+            Logout
+        </p>
+    </a>
+</li>
+</ul>
+</nav>
+<!-- /.sidebar-menu -->
+</div>
+<!-- /.sidebar -->
+</aside>
